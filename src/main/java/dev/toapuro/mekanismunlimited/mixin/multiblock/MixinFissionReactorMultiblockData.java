@@ -1,7 +1,6 @@
 package dev.toapuro.mekanismunlimited.mixin.multiblock;
 
 import com.google.common.primitives.Ints;
-import dev.toapuro.mekanismunlimited.structure.IAdditionalRepairableMultiblock;
 import mekanism.common.lib.multiblock.MultiblockData;
 import mekanism.generators.common.config.MekanismGeneratorsConfig;
 import mekanism.generators.common.content.fission.FissionReactorMultiblockData;
@@ -13,20 +12,17 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.LongSupplier;
 
 @Mixin(value = FissionReactorMultiblockData.class, remap = false)
 @Debug(export = true)
-public abstract class MixinFissionReactorMultiblockData extends MultiblockData implements IAdditionalRepairableMultiblock {
+public abstract class MixinFissionReactorMultiblockData extends MultiblockData {
 
     @Shadow private int cooledCoolantCapacity;
 
     @Unique private long mekborderless$cooledCoolantCapacityLong;
-    @Unique private DoubleSupplier mekborderless$additionalRepairRate = () -> 0;
 
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lmekanism/common/capabilities/chemical/multiblock/MultiblockChemicalTankBuilder;input(Lmekanism/common/lib/multiblock/MultiblockData;Ljava/util/function/LongSupplier;Ljava/util/function/Predicate;Lmekanism/api/IContentsListener;)Lmekanism/api/chemical/IChemicalTank;"), index = 1)
     private LongSupplier init(LongSupplier capacity) {
@@ -42,20 +38,5 @@ public abstract class MixinFissionReactorMultiblockData extends MultiblockData i
 
     public MixinFissionReactorMultiblockData(BlockEntity tile) {
         super(tile);
-    }
-
-    @ModifyVariable(method = "handleDamage", at = @At(value = "STORE"), name = "repairRate")
-    public double modifyRepairRate(double repairRate) {
-        return repairRate * mekborderless$additionalRepairRate.getAsDouble();
-    }
-
-    @Override
-    public void mekborderless$setAdditionalRepairRateSup(DoubleSupplier repairRateSup) {
-        this.mekborderless$additionalRepairRate = repairRateSup;
-    }
-
-    @Override
-    public DoubleSupplier mekborderless$getAdditionalRepairRateSup() {
-        return mekborderless$additionalRepairRate;
     }
 }
