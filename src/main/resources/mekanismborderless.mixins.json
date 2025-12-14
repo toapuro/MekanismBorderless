@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.toapuro.mekanismunlimited.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mekanismborderless.refmap.json",
+  "mixins": [
+    "multiblock.MixinCuboidStructureValidator",
+    "multiblock.MixinFissionReactorMultiblockData",
+    "multiblock.MixinFormationProtocol",
+    "multiblock.MixinTileEntityMultiblock"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
