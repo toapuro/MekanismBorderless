@@ -1,9 +1,0 @@
-{
-  "parent": "mekanism:block/machine",
-  "textures": {
-    "sides": "mekanismgenerators:block/fission_reactor_casing",
-    "front": "mekanismborderless:block/maintenance_port",
-    "up": "mekanismgenerators:block/fission_reactor_casing",
-    "down": "mekanismgenerators:block/fission_reactor_casing"
-  }
-}
