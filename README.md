@@ -10,24 +10,28 @@ If you take a look at the gallery you'll understand
 
 ### Server
 
-- **Default Multiblock Config**
+**Default Multiblock Config**
 
-> defaultBoundOverride - Apply all multiblocks (true/false)
-> 
-> defaultStructureX/Y/ZBound - Maximum multiblock size
+```
+defaultBoundOverride - Apply all multiblocks (true/false)
 
-- **Multiblock-Specific Config**
+defaultStructureX/Y/ZBound - Maximum multiblock size
+```
+
+**Multiblock-Specific Config**
 
 Almost the same as the default settings
 
-> *ReactorBoundOverride - Inherit default settings (true/fales)
-> 
-> *StructureX/Y/ZBound - Maximum multiblock size
+```
+ReactorBoundOverride - Inherit default settings (true/fales)
+
+StructureX/Y/ZBound - Maximum multiblock size
+```
 
 ### Client
 
 > reduceOverhead - Reduces multi-block client ticks to make them lighter (unstable)
-> 
+>
 > fusionCoreSizeMultiplier - Joke
 
 Notes: This mod currently does not support Mekanism Extras, Just Enough Mekanism Multiblocks
