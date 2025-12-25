@@ -4,8 +4,6 @@ An addon mod for Mekanism.
 
 This mod **increases the maximum allowed size** of Mekanism multiblock structures.
 
-If you take a look at the gallery you'll understand
-
 ## Config
 
 ### Server
