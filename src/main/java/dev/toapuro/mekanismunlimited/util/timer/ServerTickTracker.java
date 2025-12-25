@@ -1,4 +1,4 @@
-package dev.toapuro.mekanismunlimited.util.tick;
+package dev.toapuro.mekanismunlimited.util.timer;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,10 +1,8 @@
 package dev.toapuro.mekanismunlimited;
 
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(MekanismBorderless.MODID)
 public class MekanismBorderless {
@@ -13,10 +11,10 @@ public class MekanismBorderless {
 
     @SuppressWarnings("removal")
     public MekanismBorderless() {
-        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        MBClientConfig.initializeConfig();
 
-        MBConfig.initializeConfig();
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MBConfig.SPEC);
+        ModLoadingContext loadingContext = ModLoadingContext.get();
+        loadingContext.registerConfig(ModConfig.Type.CLIENT, MBClientConfig.SPEC);
+        loadingContext.registerConfig(ModConfig.Type.SERVER, MBServerConfig.getSpec());
     }
 }

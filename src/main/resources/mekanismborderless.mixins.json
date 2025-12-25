@@ -5,12 +5,29 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mekanismborderless.refmap.json",
   "mixins": [
-    "multiblock.MixinCuboidStructureValidator",
-    "multiblock.MixinFissionReactorMultiblockData",
-    "multiblock.MixinFormationProtocol",
-    "multiblock.MixinTileEntityMultiblock"
+    "accessor.CuboidStructureValidatorAccessor",
+    "accessor.MultiblockManagerAccessor",
+    "multiblock.MixinStructure",
+    "multiblock.MixinTileEntityFusionReactorBlock",
+    "multiblock.MixinTileEntityFusionReactorController",
+    "multiblock.MixinTileEntityMultiblock",
+    "multiblock.data.MixinFissionReactorMultiblockData",
+    "multiblock.data.MixinFusionReactorMultiblockData",
+    "multiblock.data.MixinMultiblockData",
+    "multiblock.data.MixinSPSMultiblockData",
+    "multiblock.validator.MixinCuboidStructureValidator",
+    "multiblock.validator.MixinEvaporationValidator",
+    "multiblock.validator.MixinFormationProtocol",
+    "multiblock.validator.MixinFusionReactorValidator",
+    "multiblock.validator.MixinSPSValidator",
+    "tickfilter.BoundTickingBlockEntityAccessor",
+    "tickfilter.MixinBoundTickingBlockEntity",
+    "tickfilter.MixinRebindableTickingBlockEntityWrapper"
   ],
   "client": [
+    "multiblock.MixinGuiFusionReactorFuel",
+    "multiblock.MixinRenderFusionReactor",
+    "multiblock.MixinRenderThermalEvaporationPlant"
   ],
   "injectors": {
     "defaultRequire": 1

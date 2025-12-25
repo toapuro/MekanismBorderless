@@ -1,4 +1,4 @@
-package dev.toapuro.mekanismunlimited.mixin.multiblock;
+package dev.toapuro.mekanismunlimited.mixin.multiblock.data;
 
 import com.google.common.primitives.Ints;
 import mekanism.common.lib.multiblock.MultiblockData;

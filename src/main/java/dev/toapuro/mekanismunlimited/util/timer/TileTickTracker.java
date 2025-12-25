@@ -1,4 +1,4 @@
-package dev.toapuro.mekanismunlimited.util.tick;
+package dev.toapuro.mekanismunlimited.util.timer;
 
 public class TileTickTracker {
 

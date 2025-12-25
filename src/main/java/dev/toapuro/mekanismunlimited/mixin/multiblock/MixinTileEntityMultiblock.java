@@ -1,13 +1,15 @@
 package dev.toapuro.mekanismunlimited.mixin.multiblock;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import dev.toapuro.mekanismunlimited.util.tick.TileTickTracker;
+import dev.toapuro.mekanismunlimited.util.timer.TileTickTracker;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.common.lib.multiblock.IMultiblockBase;
 import mekanism.common.lib.multiblock.Structure;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.tile.prefab.TileEntityMultiblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,4 +30,10 @@ public class MixinTileEntityMultiblock extends TileEntityMekanism {
     public <TILE extends BlockEntity & IMultiblockBase> boolean preStructureTick(Structure instance, TILE tile, boolean tryValidate) {
         return mekborderless$TileTickTracker.claimTick();
     }
+
+    @ModifyReturnValue(method = "getReducedUpdateTag", at = @At("RETURN"))
+    public CompoundTag modifyReducedUpdateTag(CompoundTag original) {
+        return original;
+    }
+
 }
