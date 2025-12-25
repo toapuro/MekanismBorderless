@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.toapuro.mekanismunlimited.mixin",
+  "package": "dev.toapuro.mekanismborderless.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mekanismborderless.refmap.json",
   "mixins": [
