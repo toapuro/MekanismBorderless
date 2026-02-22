@@ -22,8 +22,8 @@
     "multiblock.validator.MixinFusionReactorValidator",
     "multiblock.validator.MixinSPSValidator",
     "tickfilter.BoundTickingBlockEntityAccessor",
-    "tickfilter.MixinBoundTickingBlockEntity",
-    "tickfilter.MixinRebindableTickingBlockEntityWrapper"
+    "tickfilter.MixinLevel",
+    "tickfilter.RebindableTickingBlockEntityWrapperAccessor"
   ],
   "client": [
     "multiblock.MixinGuiFusionReactorFuel",
