@@ -7,6 +7,7 @@
   "mixins": [
     "accessor.CuboidStructureValidatorAccessor",
     "accessor.MultiblockManagerAccessor",
+    "accessor.StructureBuilderAccessor",
     "multiblock.MixinStructure",
     "multiblock.MixinTileEntityFusionReactorBlock",
     "multiblock.MixinTileEntityFusionReactorController",
