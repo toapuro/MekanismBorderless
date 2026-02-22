@@ -16,19 +16,28 @@ public class MBStructureHelper {
      * @return {@link FormationProtocol.StructureRequirement#ordinal()}
      */
     public static byte getCircleStructureRequirement(int x, int y, int size, int radius) {
-        // Default size = 7
         int center = size / 2;
 
         // manhattan distance
         int dst = Math.abs(center - x) + Math.abs(center - y);
 
-        if(dst == radius) {
-            return 1;
-        } else if(dst < radius) {
-            return 2;
-        } else {
+        // outside
+        if (dst > radius) {
             return 0;
         }
+
+        // boundary (circle edge)
+        if (dst == radius) {
+            return 1;
+        }
+
+        // grid border
+        if (x == 0 || y == 0 || x == size - 1 || y == size - 1) {
+            return 1;
+        }
+
+        // inside
+        return 2;
     }
 
     public static VoxelCuboid fetchCuboid(Structure structure, VoxelCuboid minBounds, VoxelCuboid maxBounds, int tolelance) {
@@ -72,12 +81,12 @@ public class MBStructureHelper {
     private static boolean hasOutOfBoundsNegativeMinor(NavigableMap<Integer, VoxelPlane> minorAxisMap, int majorKey) {
         int minorKey;
         for(Map.Entry<Integer, VoxelPlane> minorEntry = minorAxisMap.firstEntry(); minorEntry != null; minorEntry = minorAxisMap.higherEntry(minorKey)) {
-            minorKey = (Integer)minorEntry.getKey();
+            minorKey = minorEntry.getKey();
             if (minorKey >= majorKey) {
                 break;
             }
 
-            if (((VoxelPlane)minorEntry.getValue()).hasFrame()) {
+            if (minorEntry.getValue().hasFrame()) {
                 return true;
             }
         }
