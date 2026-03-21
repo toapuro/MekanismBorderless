@@ -1,5 +1,7 @@
 package dev.toapuro.mekanismborderless.builder;
 
+import com.google.common.base.Preconditions;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import mekanism.api.text.EnumColor;
@@ -7,6 +9,8 @@ import mekanism.api.text.ILangEntry;
 import mekanism.common.MekanismLang;
 import mekanism.common.base.MekanismPermissions;
 import mekanism.common.lib.math.voxel.VoxelCuboid;
+import mekanism.common.lib.multiblock.FormationProtocol;
+import net.minecraft.commands.CommandRuntimeException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
@@ -28,30 +32,40 @@ public class ExtendedBuildCommand {
                                                                       ExtendedMultiblockBuilder builder) {
         return argumentBuilder
                 .then(Commands.argument("start", BlockPosArgument.blockPos())
-                        .then(Commands.argument("end", BlockPosArgument.blockPos())
-                                .executes(ctx ->
-                                        build(ctx, localizedName, builder,
-                                                BlockPosArgument.getLoadedBlockPos(ctx, "start"), BlockPosArgument.getLoadedBlockPos(ctx, "end"))
+                        .then(Commands.argument("length", IntegerArgumentType.integer())
+                                .then(Commands.argument("height", IntegerArgumentType.integer())
+                                        .then(Commands.argument("width", IntegerArgumentType.integer())
+                                                .executes(ctx ->
+                                                        build(ctx, localizedName, builder,
+                                                                BlockPosArgument.getLoadedBlockPos(ctx, "start"),
+                                                                IntegerArgumentType.getInteger(ctx, "length"),
+                                                                IntegerArgumentType.getInteger(ctx, "height"),
+                                                                IntegerArgumentType.getInteger(ctx, "width"))
+                                                )
+                                        )
                                 )
                         )
                 );
     }
 
-    private static int build(CommandContext<CommandSourceStack> ctx, ILangEntry localizedName, ExtendedMultiblockBuilder builder, BlockPos start, BlockPos end) {
+    private static int build(CommandContext<CommandSourceStack> ctx, ILangEntry localizedName, ExtendedMultiblockBuilder builder, BlockPos start, int length, int height, int width) {
+        Preconditions.checkArgument(length > 0, new CommandRuntimeException(Component.literal("The length must be positive")));
+        Preconditions.checkArgument(height > 0, new CommandRuntimeException(Component.literal("The height must be positive")));
+        Preconditions.checkArgument(width > 0, new CommandRuntimeException(Component.literal("The width must be positive")));
+
         CommandSourceStack source = ctx.getSource();
-        BlockPos minPos = new BlockPos(Math.min(start.getX(), end.getX()), Math.min(start.getY(), end.getY()), Math.min(start.getZ(), end.getZ()));
-        BlockPos maxPos = new BlockPos(Math.max(start.getX(), end.getX()), Math.max(start.getY(), end.getY()), Math.max(start.getZ(), end.getZ()));
+        BlockPos maxPos = start.offset(length-1, height-1, width-1);
 
-        VoxelCuboid cuboid = new VoxelCuboid(minPos, maxPos);
-        boolean success = builder.build(source.getLevel(), cuboid);
+        VoxelCuboid cuboid = new VoxelCuboid(start, maxPos);
+        FormationProtocol.FormationResult result = builder.build(source.getLevel(), cuboid);
 
-        if(success) {
+        if(result.isFormed()) {
             source.sendSuccess(() -> {
                 ILangEntry builtEntry = MekanismLang.COMMAND_BUILD_BUILT;
                 return builtEntry.translateColored(EnumColor.GRAY, EnumColor.INDIGO, localizedName);
             }, true);
         } else {
-            source.sendFailure(Component.literal("Invalid multiblock size"));
+            source.sendFailure(result.getResultText());
         }
         return 0;
     }

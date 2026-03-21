@@ -4,10 +4,12 @@ import dev.toapuro.mekanismborderless.builder.ExtendedMultiblockBuilder;
 import mekanism.common.command.builders.StructureBuilder;
 import mekanism.common.lib.math.voxel.VoxelCuboid;
 import mekanism.common.lib.multiblock.CuboidStructureValidator;
+import mekanism.common.lib.multiblock.FormationProtocol.FormationResult;
 import mekanism.common.registries.MekanismBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -39,13 +41,20 @@ public class SPSExtendedBuilder extends ExtendedMultiblockBuilder {
     }
 
     @Override
-    protected boolean precheck(Level level, BlockPos startPos, VoxelCuboid cuboid) {
+    protected FormationResult precheck(Level level, BlockPos startPos, VoxelCuboid cuboid) {
         int xSize = cuboid.length();
         int ySize = cuboid.height();
         int zSize = cuboid.width();
         if (xSize != ySize || ySize != zSize) {
-            return false;
+            return FormationResult.fail(
+                    Component.literal("Couldn't form, width and length of structure must be equal.")
+            );
         }
-        return xSize % 2 != 0;
+        if(xSize % 2 != 0) {
+            return FormationResult.fail(
+                    Component.literal("Couldn't form, width and length of structure must be odd.")
+            );
+        }
+        return FormationResult.SUCCESS;
     }
 }

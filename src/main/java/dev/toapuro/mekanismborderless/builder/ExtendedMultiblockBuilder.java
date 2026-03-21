@@ -6,6 +6,7 @@ import mekanism.common.command.builders.StructureBuilder;
 import mekanism.common.lib.math.voxel.VoxelCuboid;
 import mekanism.common.lib.multiblock.CuboidStructureValidator;
 import mekanism.common.lib.multiblock.FormationProtocol;
+import mekanism.common.lib.multiblock.FormationProtocol.FormationResult;
 import mekanism.common.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -69,7 +70,7 @@ public class ExtendedMultiblockBuilder {
         }
     }
 
-    public boolean build(Level level, VoxelCuboid cuboid) {
+    public FormationResult build(Level level, VoxelCuboid cuboid) {
         CuboidStructureValidator<?> validator = createValidator(cuboid);
         var access = (CuboidStructureValidatorAccessor) validator;
 
@@ -77,8 +78,9 @@ public class ExtendedMultiblockBuilder {
         BlockPos max = cuboid.getMaxPos();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-        if(!precheck(level, cuboid.getMinPos(), cuboid)) {
-            return false;
+        FormationResult result = precheck(level, cuboid.getMinPos(), cuboid);
+        if(!result.isFormed()) {
+            return result;
         }
 
         for(int x = min.getX(); x <= max.getX(); ++x) {
@@ -93,7 +95,7 @@ public class ExtendedMultiblockBuilder {
         }
 
         this.buildAdditional(level, cuboid.getMinPos(), cuboid);
-        return true;
+        return FormationResult.SUCCESS;
     }
 
     public CuboidStructureValidator<?> createValidator(VoxelCuboid cuboid) {
@@ -122,7 +124,7 @@ public class ExtendedMultiblockBuilder {
 
     }
 
-    protected boolean precheck(Level level, BlockPos startPos, VoxelCuboid cuboid) {
-        return true;
+    protected FormationResult precheck(Level level, BlockPos startPos, VoxelCuboid cuboid) {
+        return FormationResult.SUCCESS;
     }
 }
